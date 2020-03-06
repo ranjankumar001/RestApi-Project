@@ -59,17 +59,21 @@ router.delete('/:postId', async(req, res) => {
 });
 
 //Update a Post
-router.patch('/:postId', async(req, res) => {
-    try{
-    const updatedPost=await Post.updateOne(
-        {_id:req.params.postId},
-        {$set:{title:req.body.title}}
-        );
-    res.json(updatedPost);
+router.put('/update/:id', async(req, res) => {
+    try
+    {
+        const updatedPost=await model.findByIdAndUpdate(req.params.id)
+        updatedPost.title=req.body.title
+        updatedPost.description=req.body.description
+            
+        const savedPost=await updatedPost.save()
+         res.json(savedPost)
+             
+            
     }
     catch(err)
     {
-        res.json({message:err})
+         res.json({message:err});
     }
 });
 
